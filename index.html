@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Easy Programs for the DG Nova — Season 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:2.25rem}
+  *{box-sizing:border-box}
+  :root{
+    --paper:#fbfbf9; --ink:#161613; --muted:#5b5b54; --line:#d9d9d2; --line-strong:#161613;
+    --panel:#efefea; --panel-2:#e6e6df; --code-bg:#141412; --code-ink:#f2f0e6; --code-dim:#a9a698;
+    --accent:#b34a12; --accent-ink:#ffffff; --accent-soft:#fbe9dd;
+    --lamp:#e07b24; --lamp-off:#c9c9c0; --good:#2e6b34;
+    --radius:6px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#131311; --ink:#ecebe4; --muted:#a3a398; --line:#33332e; --line-strong:#ecebe4;
+      --panel:#1c1c1a; --panel-2:#242421; --code-bg:#0b0b0a; --code-ink:#f2f0e6; --code-dim:#8f8d81;
+      --accent:#e07b24; --accent-ink:#161310; --accent-soft:#3a2413;
+      --lamp:#f59e0b; --lamp-off:#3d3d38; --good:#7bc47f;
+    }
+  }
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.6}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+  a{color:var(--accent);text-underline-offset:3px}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px 72px}
+
+  /* ---------- Masthead ---------- */
+  .masthead{border-bottom:3px solid var(--line-strong);padding:34px 0 26px}
+  .topline{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  h1{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:clamp(2rem,6.2vw,3.6rem);line-height:1.04;margin:18px 0 6px;letter-spacing:-.01em}
+  h1 .nova{color:var(--accent)}
+  .standfirst{font-size:clamp(1.08rem,2.4vw,1.3rem);line-height:1.5;max-width:44ch;margin:10px 0 0}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .meta-chip{font-family:"IBM Plex Mono",monospace;font-size:.8rem;border:1.5px solid var(--line-strong);padding:7px 12px;border-radius:999px;background:var(--paper)}
+  .meta-chip b{color:var(--accent)}
+  .meta-chip.solid{background:var(--ink);color:var(--paper)}
+  .meta-chip.solid b{color:var(--lamp)}
+
+  /* ---------- Front panel ---------- */
+  .panel-box{margin-top:28px;border:2px solid var(--line-strong);border-radius:10px;background:var(--panel);overflow:hidden}
+  .panel-head{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline;padding:14px 18px 10px;border-bottom:1px solid var(--line)}
+  .panel-head h2{font-family:"IBM Plex Mono",monospace;font-size:1rem;margin:0}
+  .panel-head p{margin:0;font-size:.9rem;color:var(--muted)}
+  .readout{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+  .readout div{padding:12px 18px;border-right:1px solid var(--line)}
+  .readout div:last-child{border-right:none}
+  .readout .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block}
+  .readout .v{font-family:"IBM Plex Mono",monospace;font-size:clamp(1.15rem,3.4vw,1.6rem);font-weight:600}
+  .switches{display:flex;gap:4px;padding:16px 14px 8px;overflow:hidden;flex-wrap:nowrap;justify-content:space-between}
+  .sw{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0}
+  .sw button{width:100%;min-width:36px;max-width:52px;height:58px;border:2px solid var(--line-strong);border-radius:6px;background:var(--panel-2);cursor:pointer;position:relative;padding:0}
+  .sw button::after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:10px;height:22px;border-radius:3px;background:var(--ink);top:6px;transition:top .12s ease}
+  .sw button[aria-pressed="true"]::after{top:28px}
+  .sw .lampdot{width:11px;height:11px;border-radius:50%;background:var(--lamp-off);border:1px solid var(--line-strong)}
+  .sw button[aria-pressed="true"] ~ .lampdot{background:var(--lamp);box-shadow:0 0 8px var(--lamp)}
+  .sw .bitno{font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--muted)}
+  .panel-actions{display:flex;flex-wrap:wrap;gap:8px;padding:10px 18px 16px;align-items:center}
+  .btn{font-family:"IBM Plex Mono",monospace;font-size:.85rem;border:1.5px solid var(--line-strong);background:var(--paper);color:var(--ink);border-radius:var(--radius);padding:9px 14px;cursor:pointer;min-height:40px}
+  .btn:hover{background:var(--panel-2)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+  .panel-note{font-size:.88rem;color:var(--muted);margin:0}
+  @media (max-width:640px){ .switches{gap:2px;padding:14px 8px 6px} .sw button{height:50px;min-width:0} .readout div{padding:10px 12px} }
+
+  /* ---------- Sections ---------- */
+  section{margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--line-strong);padding-bottom:8px;margin-bottom:20px;flex-wrap:wrap}
+  .sec-head .no{font-family:"IBM Plex Mono",monospace;color:var(--accent);font-weight:700;font-size:.95rem}
+  .sec-head h2{font-family:"IBM Plex Mono",monospace;font-size:clamp(1.3rem,3.4vw,1.7rem);margin:0;font-weight:700}
+  .sec-head p{margin:0 0 0 auto;color:var(--muted);font-size:.92rem;max-width:36ch;text-align:right}
+  @media (max-width:640px){ .sec-head p{margin:0;text-align:left} }
+  .lede{font-size:1.08rem;max-width:68ch}
+  .lede + .lede{margin-top:12px}
+
+  .rules{border-top:1px solid var(--line)}
+  .rule{display:grid;grid-template-columns:64px 1fr;gap:6px 18px;padding:18px 0;border-bottom:1px solid var(--line)}
+  .rule .n{font-family:"IBM Plex Mono",monospace;font-size:1.9rem;font-weight:700;color:var(--accent);line-height:1}
+  .rule h3{font-family:"IBM Plex Mono",monospace;margin:0 0 4px;font-size:1.02rem}
+  .rule p{margin:0;color:var(--muted);max-width:62ch}
+  @media (max-width:520px){ .rule{grid-template-columns:44px 1fr} .rule .n{font-size:1.4rem} }
+
+  /* ---------- Episode 01 ---------- */
+  .ep1{display:grid;grid-template-columns:1fr 1.25fr;gap:26px;align-items:start}
+  @media (max-width:820px){ .ep1{grid-template-columns:1fr} }
+  .ep1 h3{font-family:"IBM Plex Mono",monospace;font-size:1.15rem;margin:0 0 8px}
+  .ep1 p{margin:0 0 12px;color:var(--muted)}
+  .ep1 p strong{color:var(--ink)}
+  .learns{margin:0;padding-left:20px;color:var(--muted)}
+  .learns li{margin-bottom:6px}
+  .learns li::marker{color:var(--accent)}
+  .codebox{background:var(--code-bg);color:var(--code-ink);border-radius:10px;overflow:hidden;border:2px solid var(--line-strong)}
+  .codebox-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #33332e;font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--code-dim)}
+  .copy-btn{font-family:"IBM Plex Mono",monospace;font-size:.78rem;background:transparent;color:var(--code-ink);border:1.5px solid var(--code-dim);border-radius:5px;padding:7px 12px;cursor:pointer;min-height:36px}
+  .copy-btn:hover{border-color:var(--code-ink)}
+  pre{margin:0;padding:16px 18px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;font-size:.83rem;line-height:1.65}
+  pre .c{color:var(--code-dim)}
+  .run-note{font-family:"IBM Plex Mono",monospace;font-size:.82rem;background:var(--accent-soft);border-radius:var(--radius);padding:12px 14px;margin-top:14px}
+  .run-note p{margin:0;color:var(--ink)}
+
+  /* ---------- Roadmap ---------- */
+  .progress-line{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.88rem;margin-bottom:16px}
+  .pbar{flex:1;min-width:180px;height:14px;border:1.5px solid var(--line-strong);border-radius:999px;overflow:hidden;background:var(--panel)}
+  .pbar i{display:block;height:100%;width:0%;background:var(--accent)}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .toolbar .btn[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .search-row{margin-bottom:18px}
+  .search-row label{font-family:"IBM Plex Mono",monospace;font-size:.8rem;display:block;margin-bottom:6px;color:var(--muted)}
+  .search-row input{width:100%;font-family:"IBM Plex Mono",monospace;font-size:.95rem;padding:11px 13px;border:1.5px solid var(--line-strong);border-radius:var(--radius);background:var(--paper);color:var(--ink)}
+  .arc-label{font-family:"IBM Plex Mono",monospace;font-size:.85rem;font-weight:700;margin:26px 0 4px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .arc-label span{color:var(--muted);font-weight:400;font-size:.8rem}
+  .ep-list{border-top:1px solid var(--line)}
+  .ep{border-bottom:1px solid var(--line)}
+  .ep-toggle{width:100%;display:grid;grid-template-columns:52px 1fr auto;gap:6px 14px;align-items:center;text-align:left;background:none;border:none;color:var(--ink);cursor:pointer;padding:14px 6px;font:inherit;min-height:56px}
+  .ep-toggle:hover{background:var(--panel)}
+  .ep-num{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:1.05rem;color:var(--accent)}
+  .ep-title{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.98rem;display:block}
+  .ep-sub{font-size:.9rem;color:var(--muted);display:block;margin-top:2px}
+  .ep-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .tag{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.04em;border:1px solid var(--line-strong);border-radius:999px;padding:4px 8px;white-space:nowrap}
+  .tag.lang{background:var(--panel-2)}
+  .ep-detail{display:none;padding:4px 6px 20px 66px;max-width:72ch}
+  .ep-detail.open{display:block}
+  .ep-detail p{margin:0 0 10px;color:var(--muted)}
+  .ep-detail p strong{color:var(--ink)}
+  .ep-detail ul{margin:0 0 10px;padding-left:20px;color:var(--muted)}
+  .ep-detail li::marker{color:var(--accent)}
+  .stretch{font-family:"IBM Plex Mono",monospace;font-size:.83rem;background:var(--panel);border-radius:var(--radius);padding:10px 12px}
+  .stretch p{margin:0;color:var(--ink)}
+  @media (max-width:640px){
+    .ep-toggle{grid-template-columns:40px 1fr}
+    .ep-tags{grid-column:2;justify-content:flex-start}
+    .ep-detail{padding-left:6px}
+  }
+  .no-results{display:none;padding:22px 6px;color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:.9rem}
+  .no-results.show{display:block}
+
+  /* ---------- Week rhythm ---------- */
+  .week{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--line-strong);border-radius:10px;overflow:hidden}
+  .week div{padding:16px;border-right:1px solid var(--line);background:var(--panel)}
+  .week div:last-child{border-right:none;background:var(--accent-soft)}
+  .week .d{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);font-weight:700;display:block;margin-bottom:6px}
+  .week h3{font-family:"IBM Plex Mono",monospace;font-size:.95rem;margin:0 0 6px}
+  .week p{margin:0;font-size:.9rem;color:var(--muted)}
+  @media (max-width:820px){ .week{grid-template-columns:1fr 1fr} .week div{border-bottom:1px solid var(--line)} }
+  @media (max-width:480px){ .week{grid-template-columns:1fr} .week div{border-right:none} }
+
+  .kit{display:grid;grid-template-columns:1fr 1fr;gap:0 34px}
+  @media (max-width:720px){ .kit{grid-template-columns:1fr} }
+  .kit-item{padding:14px 0;border-bottom:1px solid var(--line)}
+  .kit-item h3{font-family:"IBM Plex Mono",monospace;font-size:.98rem;margin:0 0 4px}
+  .kit-item p{margin:0;color:var(--muted);font-size:.95rem}
+
+  .about-nova{border:2px solid var(--line-strong);border-radius:10px;padding:22px;background:var(--panel)}
+  .about-nova h3{font-family:"IBM Plex Mono",monospace;margin:0 0 10px;font-size:1.05rem}
+  .about-nova p{margin:0 0 10px;max-width:70ch}
+  .about-nova p:last-child{margin-bottom:0}
+  .specs{display:flex;flex-wrap:wrap;gap:8px 26px;font-family:"IBM Plex Mono",monospace;font-size:.85rem;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+  .specs span b{color:var(--accent)}
+
+  footer{margin-top:64px;border-top:3px solid var(--line-strong);padding-top:20px;display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+  footer p{margin:0;max-width:52ch}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} .sw button::after{transition:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ================= MASTHEAD ================= -->
+  <header class="masthead">
+    <div class="topline">
+      <span>A weekly type-in blog · GitHub Pages</span>
+      <span>Season 1 · 24 episodes</span>
+    </div>
+    <h1>Easy Programs<br>for the DG <span class="nova">Nova</span></h1>
+    <p class="standfirst">One new program a week, written together, small enough to type in, run, and actually understand. No frameworks. No prerequisites beyond curiosity about a 16-bit minicomputer from 1969.</p>
+    <div class="meta-row">
+      <span class="meta-chip solid">Episode 01 — <b>ready to draft</b></span>
+      <span class="meta-chip">Cadence — <b>weekly</b></span>
+      <span class="meta-chip">Season — <b>24 episodes</b></span>
+      <span class="meta-chip">Languages — <b>Nova assembly &amp; BASIC</b></span>
+      <span class="meta-chip">Written by — <b>Randall + Eli, together</b></span>
+    </div>
+
+    <!-- Front panel -->
+    <div class="panel-box" aria-label="Interactive Nova front panel switch register">
+      <div class="panel-head">
+        <h2>THE FRONT PANEL, WHILE YOU READ</h2>
+        <p>Flip the switches. This is how a Nova programmer loaded a number — by hand, in binary.</p>
+      </div>
+      <div class="readout" aria-live="polite">
+        <div><span class="k">Switch register · Octal</span><span class="v" id="ro-oct">000000</span></div>
+        <div><span class="k">Decimal</span><span class="v" id="ro-dec">0</span></div>
+        <div><span class="k">Bits set</span><span class="v" id="ro-bits">0 of 16</span></div>
+      </div>
+      <div class="switches" id="switches" role="group" aria-label="Sixteen data switches, bit 0 on the left"></div>
+      <div class="panel-actions">
+        <button class="btn" type="button" id="btn-clear">Clear all</button>
+        <button class="btn" type="button" id="btn-052525">Load 052525</button>
+        <button class="btn" type="button" id="btn-random">Surprise me</button>
+        <p class="panel-note">Bit 0 is on the left, the Nova way — the opposite of most modern machines. Episode 03 explains why everyone thought in octal.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= WHAT EASY MEANS ================= -->
+  <section aria-labelledby="h-easy">
+    <div class="sec-head"><span class="no">01</span><h2 id="h-easy">What “easy” means here</h2><p>Easy is a discipline, not a dumbing-down.</p></div>
+    <p class="lede">Every program in this series has to earn its place by being short enough to hold in your head all at once — the same pleasure as a machine you can hold in your hand. If an episode needs a concept we haven’t covered, we stop and cover it first.</p>
+    <div class="rules">
+      <div class="rule"><span class="n">1</span><div><h3>One idea per episode</h3><p>A loop. A subroutine. A random number. Never two new tricks at once — next week’s program is allowed to use everything from the weeks before, and nothing else.</p></div></div>
+      <div class="rule"><span class="n">2</span><div><h3>Short enough to type in</h3><p>Most listings fit on one screen. You type them, you run them, you change a number and run them again. That loop — type, run, tinker — is the whole pedagogy.</p></div></div>
+      <div class="rule"><span class="n">3</span><div><h3>Every line explained</h3><p>No listing ships with a mysterious line in it. If we can’t say in plain words what a line does and why it’s there, the line comes out.</p></div></div>
+      <div class="rule"><span class="n">4</span><div><h3>It has to actually run</h3><p>Each program is run before it’s posted — on an emulator, and on real or simulated Nova hardware where we can — and the episode shows the output, including the parts that went wrong first.</p></div></div>
+    </div>
+  </section>
+
+  <!-- ================= EPISODE 01 ================= -->
+  <section aria-labelledby="h-ep1">
+    <div class="sec-head"><span class="no">02</span><h2 id="h-ep1">Episode 01, up first</h2><p>The season opener — the smallest honest program we could write.</p></div>
+    <div class="ep1">
+      <div>
+        <h3>Hello, Nova</h3>
+        <p><strong>The idea:</strong> get the machine to print a greeting on the teletype. Everything else this season — input, games, secret codes — is this program with ambitions.</p>
+        <p><strong>Before you start:</strong> nothing. This is week one on purpose. If you can find the assembler and press Run, you have all the prerequisites there are.</p>
+        <ul class="learns">
+          <li>How a Nova program starts, and where it stops (<span class="mono">HLT</span>)</li>
+          <li>Loading a character into an accumulator with <span class="mono">LDA</span></li>
+          <li>Sending one character to the teletype, then the next</li>
+          <li>Why the listing ends with data, not instructions</li>
+        </ul>
+        <div class="run-note"><p>Expected output, in full:<br><span class="mono">HELLO, NOVA!</span><br>Twelve characters. That’s the episode — and it’s enough.</p></div>
+      </div>
+      <div class="codebox">
+        <div class="codebox-head"><span>hello.s — Episode 01 draft listing</span><button class="copy-btn" type="button" id="copy-code">Copy listing</button></div>
+        <pre id="code-listing"><span class="c">; HELLO — print a greeting on the teletype
+; Easy Programs for the DG Nova, Episode 01
+; The whole program: load a character,
+; send it out, repeat until the zero.</span>
+
+START:  LDA   0, PTR      <span class="c">; AC0 = address of text</span>
+LOOP:   LDA   1, 0,0      <span class="c">; AC1 = character at that address</span>
+        SZA   1           <span class="c">; zero? then we are done</span>
+        JMP   DONE
+        <span class="c">; ... send AC1 to the teletype here
+        ; (the episode walks through the
+        ;  DOA / SKP pair line by line)</span>
+        INC   0, 0        <span class="c">; point at next character</span>
+        JMP   LOOP
+DONE:   HLT               <span class="c">; stop, with the greeting printed</span>
+
+PTR:    TEXT
+TEXT:   <span class="c">; "HELLO, NOVA!" packed two
+        ; characters to a word, ended
+        ; by a zero — shown in full
+        ; in the published episode</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ROADMAP ================= -->
+  <section aria-labelledby="h-road">
+    <div class="sec-head"><span class="no">03</span><h2 id="h-road">Season 1 — all 24 episodes</h2><p>The planned lineup. Tap any episode to see what it teaches and its stretch goal.</p></div>
+    <div class="progress-line">
+      <span id="prog-label">0 published · 24 planned</span>
+      <span class="pbar" aria-hidden="true"><i id="pbar-fill"></i></span>
+      <span id="prog-shown">Showing all 24</span>
+    </div>
+    <div class="toolbar" role="group" aria-label="Filter episodes">
+      <button class="btn" type="button" data-filter="all" aria-pressed="true">All 24</button>
+      <button class="btn" type="button" data-filter="arc1" aria-pressed="false">Arc I · First Contact</button>
+      <button class="btn" type="button" data-filter="arc2" aria-pressed="false">Arc II · Numbers at Play</button>
+      <button class="btn" type="button" data-filter="arc3" aria-pressed="false">Arc III · Words &amp; Patterns</button>
+      <button class="btn" type="button" data-filter="arc4" aria-pressed="false">Arc IV · Small Worlds</button>
+      <button class="btn" type="button" data-filter="asm" aria-pressed="false">Assembly only</button>
+      <button class="btn" type="button" data-filter="basic" aria-pressed="false">BASIC only</button>
+    </div>
+    <div class="search-row">
+      <label for="ep-search">Search the season — try “octal”, “game”, or “secret”</label>
+      <input id="ep-search" type="search" placeholder="Search episode titles and topics…" autocomplete="off">
+    </div>
+    <div id="ep-container"></div>
+    <p class="no-results" id="no-results">Nothing in Season 1 matches that — yet. Try a shorter word.</p>
+  </section>
+
+  <!-- ================= HOW A WEEK WORKS ================= -->
+  <section aria-labelledby="h-week">
+    <div class="sec-head"><span class="no">04</span><h2 id="h-week">How a week works</h2><p>One program, made together, on a steady rhythm.</p></div>
+    <div class="week">
+      <div><span class="d">Start of week</span><h3>Pick the idea</h3><p>We choose the next single concept from the season plan — or swap in a reader suggestion that fits where we’ve got to.</p></div>
+      <div><span class="d">Midweek</span><h3>Write it together</h3><p>One of us drafts the listing, the other tries to break it. The argument about the clearest way to write it is half the episode.</p></div>
+      <div><span class="d">Before posting</span><h3>Run it, honestly</h3><p>The program runs for real. Output is captured as-is; if the first version loops forever or prints garbage, that goes in the notes.</p></div>
+      <div><span class="d">Publishing day</span><h3>Post &amp; invite tinkering</h3><p>The episode goes up on GitHub Pages with the listing, the walkthrough, and a stretch goal — a small change for readers to try and report back on.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= KIT ================= -->
+  <section aria-labelledby="h-kit">
+    <div class="sec-head"><span class="no">05</span><h2 id="h-kit">What you need</h2><p>Deliberately little. No Nova required in your house.</p></div>
+    <div class="kit">
+      <div class="kit-item"><h3>A way to run Nova code</h3><p>A Nova emulator on any modern computer is enough for every episode. If you have access to real hardware, the same listings run there — the episodes note any differences we find.</p></div>
+      <div class="kit-item"><h3>An assembler &amp; a BASIC</h3><p>Assembly episodes use standard Data General Nova mnemonics (<span class="mono">LDA</span>, <span class="mono">STA</span>, <span class="mono">JSR</span>, <span class="mono">DSZ</span>…). BASIC episodes use plain, line-numbered BASIC of the kind the Nova ran — nothing dialect-specific without a note.</p></div>
+      <div class="kit-item"><h3>About an hour a week</h3><p>Typing the listing, running it, and trying the stretch goal is designed to fit in one sitting. Falling behind costs nothing: the episodes keep, and each one recaps what it builds on.</p></div>
+      <div class="kit-item"><h3>A tolerance for octal</h3><p>The Nova’s world is written in base 8. We ease in — Episode 03 is devoted to it — and by Arc II you’ll be reading <span class="mono">177777</span> as “minus one” without blinking. Mostly.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT THE NOVA ================= -->
+  <section aria-labelledby="h-nova">
+    <div class="sec-head"><span class="no">06</span><h2 id="h-nova">The machine, briefly</h2></div>
+    <div class="about-nova">
+      <h3>Data General Nova (1969)</h3>
+      <p>The Nova was Data General’s first computer: a 16-bit minicomputer built around four accumulators, a famously small instruction set, and a front panel of toggle switches and lamps. It was designed to be inexpensive, compact, and understandable — a machine one person could get to know whole.</p>
+      <p>That last part is why it suits a series like this. The Nova has no hidden machinery between you and the program: memory is memory, an instruction does one visible thing, and a twenty-line listing can be a complete, honest piece of software. Easy programs aren’t a compromise on a Nova. They’re the native style.</p>
+      <div class="specs">
+        <span>Word size <b>16 bits</b></span>
+        <span>Accumulators <b>4 (AC0–AC3)</b></span>
+        <span>Numbers <b>octal, by habit</b></span>
+        <span>Input / output <b>teletype first</b></span>
+        <span>Storage in its day <b>core memory</b></span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Easy Programs for the DG Nova</strong> — a weekly collaboration. One new program every week, twenty-four episodes in Season 1, published on GitHub Pages.</p>
+    <p>Next up: Episode 01, “Hello, Nova.”<br>Switch register above set to <span id="foot-oct">000000</span> — leave it somewhere interesting.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Front panel ---------- */
+  var bits = new Array(16).fill(0);
+  var switchesEl = document.getElementById('switches');
+  var btns = [];
+  for (var i = 0; i < 16; i++) {
+    var wrap = document.createElement('div');
+    wrap.className = 'sw';
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-pressed', 'false');
+    b.setAttribute('aria-label', 'Data switch for bit ' + i + (i === 0 ? ' (most significant)' : i === 15 ? ' (least significant)' : ''));
+    (function(idx, btn){
+      btn.addEventListener('click', function(){
+        bits[idx] = bits[idx] ? 0 : 1;
+        btn.setAttribute('aria-pressed', bits[idx] ? 'true' : 'false');
+        renderPanel();
+      });
+    })(i, b);
+    var lamp = document.createElement('span');
+    lamp.className = 'lampdot';
+    var no = document.createElement('span');
+    no.className = 'bitno';
+    no.textContent = i;
+    wrap.appendChild(b); wrap.appendChild(lamp); wrap.appendChild(no);
+    switchesEl.appendChild(wrap);
+    btns.push(b);
+  }
+  function panelValue(){
+    var v = 0;
+    for (var j = 0; j < 16; j++) v = v * 2 + bits[j];
+    return v;
+  }
+  function renderPanel(){
+    var v = panelValue();
+    var oct = v.toString(8);
+    while (oct.length < 6) oct = '0' + oct;
+    var count = bits.reduce(function(a,x){return a+x;},0);
+    document.getElementById('ro-oct').textContent = oct;
+    document.getElementById('ro-dec').textContent = v.toLocaleString('en-US');
+    document.getElementById('ro-bits').textContent = count + ' of 16';
+    document.getElementById('foot-oct').textContent = oct;
+  }
+  function setFromValue(v){
+    for (var k = 15; k >= 0; k--) { bits[k] = v % 2; v = Math.floor(v / 2); btns[k].setAttribute('aria-pressed', bits[k] ? 'true' : 'false'); }
+    renderPanel();
+  }
+  document.getElementById('btn-clear').addEventListener('click', function(){ setFromValue(0); });
+  document.getElementById('btn-052525').addEventListener('click', function(){ setFromValue(parseInt('52525', 8)); });
+  document.getElementById('btn-random').addEventListener('click', function(){ setFromValue(Math.floor(Math.random() * 65536)); });
+  renderPanel();
+
+  /* ---------- Copy listing ---------- */
+  var copyBtn = document.getElementById('copy-code');
+  copyBtn.addEventListener('click', function(){
+    var text = document.getElementById('code-listing').innerText;
+    function done(){ copyBtn.textContent = 'Copied ✓'; setTimeout(function(){ copyBtn.textContent = 'Copy listing'; }, 2000); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, done);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(e) {}
+      document.body.removeChild(ta); done();
+    }
+  });
+
+  /* ---------- Episodes ---------- */
+  var ARCS = {
+    arc1: { title: 'Arc I — First Contact', sub: 'Weeks 1–6 · Getting the machine to respond at all' },
+    arc2: { title: 'Arc II — Numbers at Play', sub: 'Weeks 7–12 · Loops grow teeth; first games' },
+    arc3: { title: 'Arc III — Words & Patterns', sub: 'Weeks 13–18 · Text, codes, and things worth printing' },
+    arc4: { title: 'Arc IV — Small Worlds', sub: 'Weeks 19–24 · Programs that feel bigger than they are' }
+  };
+  var EPS = [
+    {n:1, arc:'arc1', lang:'asm', title:'Hello, Nova', sub:'Print a greeting on the teletype', mins:'~25 lines', focus:'Character output, one at a time — the seed every later program grows from.', learns:['Starting and halting a program','Loading characters with LDA','Why listings end with data, not code'], stretch:'Make it print your own name instead — count the characters carefully.'},
+    {n:2, arc:'arc1', lang:'asm', title:'Count to Ten', sub:'A loop that knows when to stop', mins:'~15 lines', focus:'The DSZ instruction: decrement, skip if zero. One instruction that is secretly a whole loop.', learns:['DSZ and the skip idea','Labels and JMP','Tracing a loop on paper'], stretch:'Count down from ten instead, then count by twos.'},
+    {n:3, arc:'arc1', lang:'asm', title:'The Octal Counter', sub:'Counting the Nova way: 0 to 77₈', mins:'~30 lines', focus:'Why Nova programmers thought in base 8, and how to print a two-digit octal number.', learns:['Octal notation and why 16 bits love it','Printing digit by digit','Carry, without tears'], stretch:'Count to 777₈ — three digits, same trick.'},
+    {n:4, arc:'arc1', lang:'asm', title:'Echo Chamber', sub:'Type a character, get it back', mins:'~20 lines', focus:'Keyboard input at last. The machine listens, then answers — the first conversation.', learns:['Reading from the teletype keyboard','Waiting for a key with a skip loop','Echo as the ancestor of all input'], stretch:'Echo everything twice, like a canyon.'},
+    {n:5, arc:'arc1', lang:'asm', title:'The Doubling Machine', sub:'1, 2, 4, 8 … until it wraps', mins:'~20 lines', focus:'Addition as multiplication: add a number to itself and watch powers of two march past — until 16 bits run out.', learns:['ADD and the carry link','Doubling as shifting left','What overflow actually looks like'], stretch:'Find exactly where it wraps, and predict it before you run it.'},
+    {n:6, arc:'arc1', lang:'asm', title:'First Subroutine', sub:'Write it once, JSR from anywhere', mins:'~35 lines', focus:'Package the print-a-string code from Episode 01 into a subroutine any program can call.', learns:['JSR and where the return address hides (AC3)','Reusing code without copying it','A first taste of structure'], stretch:'Call the subroutine three times with three different messages.'},
+    {n:7, arc:'arc2', lang:'basic', title:'Dice Roller', sub:'Two dice, rolled honestly', mins:'~15 lines', focus:'We switch to BASIC for ideas that would drown in assembly — starting with RND and a fair pair of dice.', learns:['RND and making a 1–6 from it','INT, the floor-maker','Why the same “random” sequence repeats'], stretch:'Roll 100 times and tally how often each total appears.'},
+    {n:8, arc:'arc2', lang:'basic', title:'Guess My Number', sub:'The machine picks 1–100; you hunt', mins:'~25 lines', focus:'The classic guessing game: too high, too low, and the quiet thrill of binary search discovered by accident.', learns:['Input and comparison loops','Narrowing a range','Counting guesses'], stretch:'Swap roles — you pick the number, the machine guesses.'},
+    {n:9, arc:'arc2', lang:'basic', title:'Multiplication Table', sub:'Nested loops, neatly lined up', mins:'~20 lines', focus:'A loop inside a loop prints the whole table — and formatting turns out to be half the program.', learns:['Nested FOR loops','Column alignment','TAB and spacing'], stretch:'Print only the odd rows, then only the squares.'},
+    {n:10, arc:'arc2', lang:'basic', title:'Prime Finder', sub:'Every prime up to 100, earned by division', mins:'~25 lines', focus:'Test each number against every possible divisor. Slow, obvious, and completely correct — a fine first algorithm.', learns:['Remainders and divisibility','Breaking out early','Trading speed for clarity'], stretch:'Time it to 200, then add one shortcut and time it again.'},
+    {n:11, arc:'arc2', lang:'basic', title:'Fibonacci, Slowly', sub:'1, 1, 2, 3, 5, 8 …', mins:'~12 lines', focus:'The shortest program in the season, and maybe the prettiest: two variables trading places forever.', learns:['The swap-with-a-temp pattern','Sequences from rules','When numbers outgrow the machine'], stretch:'Print ratios of neighbours and watch them settle toward the golden ratio.'},
+    {n:12, arc:'arc2', lang:'basic', title:'Sorting Six Numbers', sub:'A bubble sort you can watch think', mins:'~30 lines', focus:'Compare neighbours, swap if they’re backwards, repeat. Print after every pass so the sort is visible, not magic.', learns:['Arrays, at last','Bubble sort, pass by pass','Why print statements are a debugging tool'], stretch:'Sort them backwards, then sort words instead of numbers.'},
+    {n:13, arc:'arc3', lang:'basic', title:'Reverse a Word', sub:'Type NOVA, get AVON', mins:'~20 lines', focus:'Strings have a length and a direction, and both can be changed. A tiny program with a satisfying snap.', learns:['LEN and MID$, character by character','Building a string backwards','Palindromes are now one step away…'], stretch:'Reverse a whole sentence, word order and all.'},
+    {n:14, arc:'arc3', lang:'basic', title:'Palindrome Checker', sub:'Was it a rat I saw?', mins:'~25 lines', focus:'Episode 13 grows up: strip the spaces, fold the case, compare the word with its mirror.', learns:['Cleaning input before judging it','Two pointers walking toward each other','Honest yes/no answers'], stretch:'Feed it “A man, a plan, a canal: Panama” and make it cope.'},
+    {n:15, arc:'arc3', lang:'basic', title:'Star Patterns', sub:'Triangles, diamonds, and a small forest', mins:'~25 lines', focus:'Loops that print shapes instead of numbers. The teletype becomes a drawing machine, one asterisk at a time.', learns:['Loops controlling spaces and stars separately','Symmetry from arithmetic','Reading a pattern as a formula'], stretch:'Print a pine tree with a trunk, sized by one input number.'},
+    {n:16, arc:'arc3', lang:'basic', title:'Caesar’s Shift', sub:'Secret messages, Roman technology', mins:'~30 lines', focus:'Shift every letter three places and HELLO becomes KHOOR. Encode, decode, and pass notes like it’s 50 BC.', learns:['Character codes (ASC and CHR$)','Wrapping Z back to A','Keys, in their simplest form'], stretch:'Try every shift from 1 to 25 and let the machine crack its own code.'},
+    {n:17, arc:'arc3', lang:'basic', title:'Word Counter', sub:'How many words in that sentence?', mins:'~20 lines', focus:'Count the spaces, add one — mostly. A small program that teaches respect for edge cases.', learns:['Scanning a string for a character','Edge cases: leading spaces, double spaces','Testing against tricky input on purpose'], stretch:'Count letters, words, and sentences, like a tiny word processor.'},
+    {n:18, arc:'arc3', lang:'basic', title:'Typewriter Banner', sub:'Your name, five lines tall', mins:'~45 lines', focus:'Big block letters built from rows of characters. The longest listing of Arc III, and the one readers will show people.', learns:['Letter shapes stored as DATA','One routine, many letters','Trading memory for effect'], stretch:'Add the letters your name needs that ours doesn’t have.'},
+    {n:19, arc:'arc4', lang:'basic', title:'Nim', sub:'The take-away game the machine plays well', mins:'~35 lines', focus:'A pile of counters, take 1–3 at a time, last one loses. Simple rules, and the machine’s strategy is one line of arithmetic.', learns:['Game state in a few variables','A winning strategy from remainders','Making the computer beatable — on purpose'], stretch:'Start with two piles and see what breaks.'},
+    {n:20, arc:'arc4', lang:'basic', title:'Moon Landing, Gently', sub:'Ten units of fuel, one quiet touchdown', mins:'~35 lines', focus:'A tiny descent simulation: altitude, velocity, burn. Type a burn rate each turn and try to arrive slowly.', learns:['A physics loop, one second at a time','Win and lose conditions that feel fair','Numbers that tell a story'], stretch:'Add a surface wind that changes every turn.'},
+    {n:21, arc:'arc4', lang:'basic', title:'Code Breaker', sub:'Three digits, clues of “hot” and “cold”', mins:'~40 lines', focus:'The machine hides a three-digit code; each guess earns clues. Logic, patience, and process of elimination.', learns:['Comparing guess and secret digit by digit','Clues that inform without giving it away','Keeping a guess history'], stretch:'Allow repeated digits and feel the difficulty jump.'},
+    {n:22, arc:'arc4', lang:'basic', title:'Rule 30', sub:'One row of cells, endless pattern', mins:'~30 lines', focus:'A one-dimensional cellular automaton: each new row is decided by the three cells above it. Chaos from almost nothing.', learns:['Rules as lookup tables','Generations printed as pictures','Emergence, seen on a teletype'], stretch:'Try Rule 90 and Rule 110 — same program, different universes.'},
+    {n:23, arc:'arc4', lang:'asm', title:'Ring the Bell', sub:'A short song for the teletype bell', mins:'~30 lines', focus:'Back to assembly for the BEL character: rhythm is just timing loops, and a teletype bell has perfect pitch for “ding”.', learns:['Delay loops and tempo','Revisiting teletype output from Episode 01','Data tables for a tune'], stretch:'Program a rhythm a reader can recognise, and don’t tell them what it is.'},
+    {n:24, arc:'arc4', lang:'basic', title:'One Room', sub:'A tiny adventure: one room, one treasure, one door', mins:'~50 lines', focus:'The season finale. A one-room text adventure using everything: input, strings, state, and a world that answers back. Small, complete, and unmistakably a game.', learns:['Rooms and objects as data','A two-word command parser (GO, TAKE, LOOK)','Ending a season with something that feels big'], stretch:'Add a second room. That’s how it starts — that’s how it always starts.'}
+  ];
+
+  var container = document.getElementById('ep-container');
+  var currentFilter = 'all';
+  var currentQuery = '';
+
+  function epMatches(ep){
+    if (currentFilter === 'asm' && ep.lang !== 'asm') return false;
+    if (currentFilter === 'basic' && ep.lang !== 'basic') return false;
+    if (currentFilter.indexOf('arc') === 0 && ep.arc !== currentFilter) return false;
+    if (currentQuery) {
+      var hay = (ep.title + ' ' + ep.sub + ' ' + ep.focus + ' ' + ep.learns.join(' ')).toLowerCase();
+      if (hay.indexOf(currentQuery) === -1) return false;
+    }
+    return true;
+  }
+
+  function renderEpisodes(){
+    container.innerHTML = '';
+    var shown = 0;
+    Object.keys(ARCS).forEach(function(arcKey){
+      var arcEps = EPS.filter(function(e){ return e.arc === arcKey && epMatches(e); });
+      if (!arcEps.length) return;
+      var h = document.createElement('div');
+      h.className = 'arc-label';
+      h.innerHTML = '';
+      h.appendChild(document.createTextNode(ARCS[arcKey].title));
+      var s = document.createElement('span');
+      s.textContent = ARCS[arcKey].sub;
+      h.appendChild(s);
+      container.appendChild(h);
+      var list = document.createElement('div');
+      list.className = 'ep-list';
+      arcEps.forEach(function(ep){
+        shown++;
+        var row = document.createElement('div');
+        row.className = 'ep';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'ep-toggle';
+        btn.setAttribute('aria-expanded', 'false');
+        var num = document.createElement('span'); num.className = 'ep-num'; num.textContent = (ep.n < 10 ? '0' : '') + ep.n;
+        var mid = document.createElement('span');
+        var t = document.createElement('span'); t.className = 'ep-title'; t.textContent = ep.title;
+        var sub = document.createElement('span'); sub.className = 'ep-sub'; sub.textContent = ep.sub;
+        mid.appendChild(t); mid.appendChild(sub);
+        var tags = document.createElement('span'); tags.className = 'ep-tags';
+        var lt = document.createElement('span'); lt.className = 'tag lang'; lt.textContent = ep.lang === 'asm' ? 'ASSEMBLY' : 'BASIC';
+        var mt = document.createElement('span'); mt.className = 'tag'; mt.textContent = ep.mins;
+        var pl = document.createElement('span'); pl.className = 'tag'; pl.textContent = 'PLANNED';
+        tags.appendChild(lt); tags.appendChild(mt); tags.appendChild(pl);
+        btn.appendChild(num); btn.appendChild(mid); btn.appendChild(tags);
+        var detail = document.createElement('div');
+        detail.className = 'ep-detail';
+        var fp = document.createElement('p');
+        var fs = document.createElement('strong'); fs.textContent = 'The program: ';
+        fp.appendChild(fs); fp.appendChild(document.createTextNode(ep.focus));
+        var lp = document.createElement('p');
+        var ls = document.createElement('strong'); ls.textContent = 'You’ll learn:';
+        lp.appendChild(ls);
+        var ul = document.createElement('ul');
+        ep.learns.forEach(function(x){ var li = document.createElement('li'); li.textContent = x; ul.appendChild(li); });
+        var st = document.createElement('div'); st.className = 'stretch';
+        var stp = document.createElement('p'); stp.textContent = 'Stretch goal — ' + ep.stretch;
+        st.appendChild(stp);
+        detail.appendChild(fp); detail.appendChild(lp); detail.appendChild(ul); detail.appendChild(st);
+        btn.addEventListener('click', function(){
+          var open = detail.classList.toggle('open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        row.appendChild(btn); row.appendChild(detail);
+        list.appendChild(row);
+      });
+      container.appendChild(list);
+    });
+    document.getElementById('no-results').classList.toggle('show', shown === 0);
+    document.getElementById('prog-shown').textContent = shown === 24 ? 'Showing all 24' : 'Showing ' + shown + ' of 24';
+  }
+
+  var filterBtns = document.querySelectorAll('[data-filter]');
+  filterBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      filterBtns.forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
+      currentFilter = btn.getAttribute('data-filter');
+      renderEpisodes();
+    });
+  });
+  document.getElementById('ep-search').addEventListener('input', function(e){
+    currentQuery = e.target.value.trim().toLowerCase();
+    renderEpisodes();
+  });
+  renderEpisodes();
+})();
+</script>
+</body>
+</html>
