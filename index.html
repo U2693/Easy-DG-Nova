@@ -165,6 +165,26 @@
   .specs{display:flex;flex-wrap:wrap;gap:8px 26px;font-family:"IBM Plex Mono",monospace;font-size:.85rem;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
   .specs span b{color:var(--accent)}
 
+  /* ---------- DG BASIC & Season 2 candidate ---------- */
+  .dg-facts{display:flex;flex-wrap:wrap;gap:8px 26px;font-family:"IBM Plex Mono",monospace;font-size:.85rem;margin:18px 0 6px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .dg-facts span b{color:var(--accent)}
+  .dg-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px}
+  @media (max-width:720px){ .dg-grid{grid-template-columns:1fr} }
+  .dg-item{padding:16px 0;border-bottom:1px solid var(--line)}
+  .dg-item h3{font-family:"IBM Plex Mono",monospace;font-size:.98rem;margin:0 0 6px}
+  .dg-item p{margin:0 0 8px;color:var(--muted);font-size:.95rem}
+  .dg-item p:last-child{margin-bottom:0}
+  .dg-item code, .lede code, .tiny-box code{font-family:"IBM Plex Mono",monospace;font-size:.88em;background:var(--panel-2);padding:1px 5px;border-radius:4px}
+  .warn{font-family:"IBM Plex Mono",monospace;font-size:.83rem;background:var(--accent-soft);border-radius:var(--radius);padding:12px 14px;margin-top:18px}
+  .warn p{margin:0}
+  .tiny-box{border:2px solid var(--line-strong);border-radius:10px;padding:22px;background:var(--panel)}
+  .tiny-box h3{font-family:"IBM Plex Mono",monospace;margin:0 0 10px;font-size:1.05rem}
+  .tiny-box p{margin:0 0 10px;max-width:70ch}
+  .tiny-box p:last-child{margin-bottom:0}
+  .tiny-box ul{margin:0 0 12px;padding-left:20px;color:var(--muted)}
+  .tiny-box li{margin-bottom:5px}
+  .tiny-box li::marker{color:var(--accent)}
+  .status-line{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
   footer{margin-top:64px;border-top:3px solid var(--line-strong);padding-top:20px;display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
   footer p{margin:0;max-width:52ch}
   @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} .sw button::after{transition:none} }
@@ -306,7 +326,7 @@ TEXT:   <span class="c">; "HELLO, NOVA!" packed two
     <div class="sec-head"><span class="no">05</span><h2 id="h-kit">What you need</h2><p>Deliberately little. No Nova required in your house.</p></div>
     <div class="kit">
       <div class="kit-item"><h3>A way to run Nova code</h3><p>A Nova emulator on any modern computer is enough for every episode. If you have access to real hardware, the same listings run there — the episodes note any differences we find.</p></div>
-      <div class="kit-item"><h3>An assembler &amp; a BASIC</h3><p>Assembly episodes use standard Data General Nova mnemonics (<span class="mono">LDA</span>, <span class="mono">STA</span>, <span class="mono">JSR</span>, <span class="mono">DSZ</span>…). BASIC episodes use plain, line-numbered BASIC of the kind the Nova ran — nothing dialect-specific without a note.</p></div>
+      <div class="kit-item"><h3>An assembler &amp; a BASIC</h3><p>Assembly episodes use standard Data General Nova mnemonics (<span class="mono">LDA</span>, <span class="mono">STA</span>, <span class="mono">JSR</span>, <span class="mono">DSZ</span>…). BASIC episodes use <strong>Data General Extended BASIC</strong> — the Nova’s own dialect — detailed in §07 below. Where its syntax differs from the Microsoft BASIC most readers know, the episode flags it.</p></div>
       <div class="kit-item"><h3>About an hour a week</h3><p>Typing the listing, running it, and trying the stretch goal is designed to fit in one sitting. Falling behind costs nothing: the episodes keep, and each one recaps what it builds on.</p></div>
       <div class="kit-item"><h3>A tolerance for octal</h3><p>The Nova’s world is written in base 8. We ease in — Episode 03 is devoted to it — and by Arc II you’ll be reading <span class="mono">177777</span> as “minus one” without blinking. Mostly.</p></div>
     </div>
@@ -326,6 +346,91 @@ TEXT:   <span class="c">; "HELLO, NOVA!" packed two
         <span>Input / output <b>teletype first</b></span>
         <span>Storage in its day <b>core memory</b></span>
       </div>
+    </div>
+  </section>
+
+  <!-- ================= DG BASIC IN DETAIL ================= -->
+  <section aria-labelledby="h-dgbasic">
+    <div class="sec-head"><span class="no">07</span><h2 id="h-dgbasic">DG BASIC, in detail</h2><p>The BASIC half of this blog has a proper name — and a personality.</p></div>
+    <p class="lede">When this page says “BASIC,” it means <strong>Data General Extended BASIC</strong>, also called Nova Extended BASIC. The earliest Novas shipped with a BASIC interpreter on punched tape; Extended BASIC followed in <strong>1970</strong> as Data General’s full dialect for the Nova line. Unlike Dartmouth BASIC, which compiled and ran, DG’s was an <strong>interpreter</strong> — you typed, edited, and ran in the same session, which is exactly the type-in rhythm this blog is built on.</p>
+    <p class="lede">It is based on <strong>Dartmouth BASIC, Fifth Edition</strong> — including that edition’s string variables and its powerful <code>MAT</code> matrix commands — and it grew up under DG’s own operating systems: DOS and RDOS on the Nova, later RTOS and AOS. Its manual, <em>Extended BASIC User’s Manual</em> (093-000065), was revised steadily through the 1970s; the 1978 revision is the one we work from. Data General later bought in a much larger dialect, <strong>Business BASIC</strong>, with database and multi-user record-locking features, which largely replaced Extended BASIC in commercial use — but Extended is the Nova-native BASIC, and it is ours.</p>
+    <div class="dg-facts" aria-label="DG Extended BASIC facts">
+      <span>First released <b>1970</b></span>
+      <span>Platform <b>Nova series</b></span>
+      <span>Type <b>interpreter</b></span>
+      <span>Manual <b>093-000065</b></span>
+      <span>Ran under <b>DOS · RDOS · AOS</b></span>
+      <span>Lineage <b>Dartmouth BASIC, 5th ed.</b></span>
+    </div>
+
+    <div class="dg-grid">
+      <div class="dg-item">
+        <h3>Names are short — very short</h3>
+        <p>A variable is a <strong>single letter, or a letter plus one digit</strong>: <code>A</code>, <code>B7</code>, <code>S$</code>. Two-letter names are not allowed. That one rule shapes every listing in Arcs II–IV — you plan your alphabet the way assembly programmers plan accumulators.</p>
+        <p>Arrays take one or two dimensions and always start at <strong>1</strong>. Skip the <code>DIM</code> and you silently get a 10-element array — and, confusingly, a <code>DIM</code>med <code>A</code> and an un-<code>DIM</code>med <code>A</code> are not necessarily the same variable. We will point at that trap the first time it matters.</p>
+      </div>
+      <div class="dg-item">
+        <h3>Numbers: two words, hexadecimal mantissa</h3>
+        <p>Ordinary numbers use <strong>two 16-bit words</strong>: a sign bit, a 7-bit exponent in excess-64 form, and a mantissa stored as hexadecimal digits — good for roughly <strong>5.4×10<sup>−79</sup> to 7.2×10<sup>75</sup></strong>. Double precision adds a second pair of words to the mantissa only: more accuracy, not more range. Short numbers print as decimals; longer ones switch to exponent form.</p>
+      </div>
+      <div class="dg-item">
+        <h3>Strings, the DG way — read this before porting anything</h3>
+        <p>This is where DG BASIC diverges most from the Microsoft BASIC most people learned. There are no <code>LEFT$</code> / <code>MID$</code> functions doing the heavy lifting. Instead you <strong>slice</strong>: <code>A$(10)</code> is A$ from character 10 to the end, and <code>A$(10,20)</code> is characters 10 through 20. <strong>Concatenation uses a comma</strong> — <code>A$=A$,B$</code> appends B$ to A$ — because <code>+</code> is arithmetic, even on strings: <code>"1234"+"2345"</code> evaluates to the number 3579, and non-numeric text is simply ignored.</p>
+        <p>String variables default to 10 characters; a <code>DIM</code> stretches one up to 32K — which is also why there are no arrays of strings: the <code>DIM</code> syntax is busy declaring the string’s length. Overflow is truncated, quietly. A character that won’t type goes in by number, in angle brackets: <code>&lt;34&gt;</code> inside a literal is a double-quote.</p>
+      </div>
+      <div class="dg-item">
+        <h3>MAT — a matrix language hiding inside BASIC</h3>
+        <p>Extended BASIC kept Dartmouth’s Fifth Edition matrix suite whole. <code>MAT</code> statements operate on entire arrays at once — the loops you would otherwise write by hand: <code>MAT A=A*2</code> scales every element, <code>MAT A=INV(A)</code> inverts, <code>MAT A=DET A</code> takes a determinant. Ready-made matrices include <code>ZER</code> (all zeros), <code>CON</code> (all ones), and <code>IDN</code> (the identity). No Season 1 episode needs MAT — which is precisely why it is noted here: it is the largest room in the house we are not using yet.</p>
+      </div>
+      <div class="dg-item">
+        <h3>It talks to the machine and the operating system</h3>
+        <p>DG BASIC was never sealed off from its computer. The <code>CPU()</code> function returns the positions of the <strong>front-panel switches</strong> — the same switches at the top of this page, readable from a BASIC program. Around it sits a small operating system in statement form: <code>FILE</code> and <code>LIBRARY</code> list directories (with wildcards), <code>DISK</code> reports free space, <code>LOAD</code> / <code>SAVE</code> / <code>RENAME</code> / <code>DELETE</code> manage programs, <code>WHO</code> lists logged-in users and <code>MSG</code> lets you bother them, and <code>SIZE</code> reports the memory your program is using.</p>
+        <p>Editing was built in, too: <code>ERASE</code> deletes a range of lines, <code>ENTER</code> reads a text file in as program lines, <code>CARDS</code> does the same from the card reader, and <code>RENUMBER</code> tidies up after an afternoon of insertions.</p>
+      </div>
+      <div class="dg-item">
+        <h3>Error handling, ahead of its time</h3>
+        <p>Two statements stand out for 1970. <code>ON ERR THEN…</code> traps errors inside the program instead of dying at the console, and <code>ON ESC THEN…</code> traps the break key the same way. <code>RETRY</code> re-runs the interrupted line (where <code>CON</code> — DG’s spelling of <code>CONT</code> — resumes the program), <code>DELAY</code> pauses, and <code>TINPUT</code>, governed by <code>TIME</code>, is an <code>INPUT</code> that gives up waiting after a set limit — timed input, in a line-numbered interpreter, on a machine with toggle switches.</p>
+      </div>
+    </div>
+
+    <div class="codebox" style="margin-top:22px">
+      <div class="codebox-head"><span>dg-basic.bas — Extended BASIC, in its own accent</span><span>Manual 093-000065</span></div>
+      <pre>10 REM DG EXTENDED BASIC — SLICING, NOT LEFT$
+20 DIM A$(14), M(2,2)
+30 A$="HELLO, NOVA!"
+40 PRINT A$(8,11)       <span class="c">REM CHARACTERS 8-11: PRINTS NOVA</span>
+50 B$=A$, " AGAIN"      <span class="c">REM COMMA CONCATENATES</span>
+60 MAT M=IDN            <span class="c">REM THE IDENTITY MATRIX</span>
+70 MAT M=M*2            <span class="c">REM EVERY ELEMENT, DOUBLED</span>
+80 PRINT CPU()          <span class="c">REM THE FRONT-PANEL SWITCHES, AS A NUMBER</span></pre>
+    </div>
+    <div class="warn"><p><strong>What this means for Season 1:</strong> episodes 07–24 are written in this dialect. Most of it will look familiar to anyone who has seen 1970s BASIC — <span class="mono">FOR…NEXT</span>, <span class="mono">GOSUB</span>, <span class="mono">RND</span>, <span class="mono">INT</span> all behave as expected. The episodes that lean on strings (13, 14, 16, 17) are where DG’s slicing, comma concatenation, and one-letter names change the shape of the code, and each of those episodes says so up front rather than letting a Microsoft-BASIC habit fail silently.</p></div>
+  </section>
+
+  <!-- ================= SEASON 2 CANDIDATE: TINY BASIC ================= -->
+  <section aria-labelledby="h-tiny">
+    <div class="sec-head"><span class="no">08</span><h2 id="h-tiny">Season 2 candidate — Tiny BASIC</h2><p>On the record, at a reader’s suggestion. Not an episode. A season.</p></div>
+    <div class="tiny-box">
+      <div class="status-line">
+        <span class="meta-chip solid">Status — <b>candidate for Season 2</b></span>
+        <span class="meta-chip">Shape — <b>multi-week arc, not one episode</b></span>
+        <span class="meta-chip">Period Nova port — <b>none known</b></span>
+      </div>
+      <h3>Bring Tiny BASIC to the Nova</h3>
+      <p><strong>The suggestion:</strong> the VCF Midwest talk <a href="https://youtu.be/gv8QqF5zYC8?si=74ZfM4b4bZS8UPsH">“Tiny BASIC: The People’s Language for the People’s Computer”</a> tells how, when the Altair 8800 arrived in January 1975 programmable only by its front-panel switches, the People’s Computer Company answered with a BASIC ordinary people could own. Dennis Allison’s “Design Notes for Tiny BASIC” appeared in the PCC newsletter in <strong>September 1975</strong> — a specification, not a program — inviting readers to implement it and mail their versions back. So many did that a new journal, <em>Dr. Dobb’s</em>, was started to print them. Tom Pittman sold his implementation for $5 while Altair BASIC cost $150.</p>
+      <p><strong>Why it could travel to a Nova:</strong> Tiny BASIC was designed to fit in <strong>2–3 KB</strong> and to be portable by construction. Most of the interpreter is written in a tiny purpose-built language, the <strong>IL (Interpretive Language)</strong> — an interpreter for the interpreter. To move Tiny BASIC to a new machine you do not rewrite the BASIC; you write one small IL engine in that machine’s assembly, and the same IL program runs on top. Pittman’s version was the one that kept that two-level structure intact. The Nova’s accumulator architecture suits a small engine like that well.</p>
+      <p><strong>The language itself is genuinely tiny</strong> — in the original design: <code>LET</code>, <code>PRINT</code>, <code>INPUT</code>, <code>IF</code>, <code>GOTO</code>, <code>GOSUB</code>, <code>RETURN</code>, <code>END</code>, <code>CLEAR</code>, <code>LIST</code>, <code>RUN</code>; integer arithmetic; line numbers under 256. Set it beside §07 and the contrast is the story: DG Extended BASIC is a minicomputer’s full working dialect, with matrices, files, and error trapping. Tiny BASIC is the smallest honest BASIC a community could carry from machine to machine in an envelope.</p>
+      <p><strong>Why it is not a Season 1 episode:</strong> it breaks every house rule in §01 at once. It is not one idea, not one evening, and not one page of code — it is an interpreter: a line store, a parser, an expression evaluator, and an IL engine underneath all of it. Slipping it into the roadmap as “episode 25” would be a lie about its size.</p>
+      <p><strong>How it could work as a Season 2 headline arc</strong> — one IL-sized piece per week:</p>
+      <ul>
+        <li><strong>Week 1 —</strong> The story and the spec: Allison’s design notes, read closely.</li>
+        <li><strong>Week 2 —</strong> The IL machine, implemented in Nova assembly.</li>
+        <li><strong>Week 3 —</strong> Storing and listing lines: the smallest possible program memory.</li>
+        <li><strong>Week 4 —</strong> Expressions: numbers, variables, and precedence on a shoestring.</li>
+        <li><strong>Week 5 —</strong> Statements: PRINT, INPUT, IF, GOSUB — the language wakes up.</li>
+        <li><strong>Week 6 —</strong> <code>PRINT 2+2</code> on a Nova that had no business knowing BASIC this small — then readers’ own Tiny programs.</li>
+      </ul>
+      <p><strong>One honest caveat:</strong> no period Tiny BASIC port to the Nova is known — the Nova never needed rescuing, because DG BASIC was already there. This would be <em>new software for an old machine</em>, which is this blog’s charter, and it would be labelled as a port, not presented as a rediscovery. Decision point: before Season 2 planning opens. Until then, it stays here — on the record.</p>
     </div>
   </section>
 
